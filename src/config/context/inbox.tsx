@@ -1,17 +1,20 @@
 import React,  {createContext} from 'react';
 import ReceivedMessage from '../interfaces/messages';
 
+type DispacthProps = {
+    type: string,
+    message: ReceivedMessage
+}
 
 type PropsInboxContext = {
     messages: ReceivedMessage[],
-    setMessages: React.Dispatch<React.SetStateAction<ReceivedMessage[]>>
+    dispatchMessages: React.Dispatch<DispacthProps>,
 }
 
 const DEFAULT_INBOX = {
     messages: [] as ReceivedMessage[],
-    setMessages: () => {}
+    dispatchMessages: () => {},
 }
 
 const InboxContext = createContext<PropsInboxContext>(DEFAULT_INBOX);
-
 export default InboxContext;

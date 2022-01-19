@@ -5,8 +5,8 @@ import InboxContext from '../../config/context/inbox';
 
 function CardTile({ title, priority}:tileProps){
 
-    const {messages} = useContext(InboxContext);
-    
+    const props = useContext(InboxContext);
+
     return (
         <StyledCardTile className='cardTile'>
             <div className='cardTile__title'>
@@ -15,7 +15,7 @@ function CardTile({ title, priority}:tileProps){
             </div>
          
 
-            {messages.filter((m) => m.priority === priority).map((m, key) => 
+            {props.messages.filter((m) => m.priority === priority).map((m, key) => 
                 <Card message={m.message} key={key} id={m.id} priority={m.priority}/>
             )}
         </StyledCardTile>
