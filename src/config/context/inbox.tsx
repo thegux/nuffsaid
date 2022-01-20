@@ -1,4 +1,4 @@
-import React,  {createContext, useReducer} from 'react';
+import React, { createContext, useReducer } from 'react';
 import ReceivedMessage from '../interfaces/messages';
 import inboxReducer from './reducers/inbox'
 
@@ -9,20 +9,20 @@ type PropsInboxContext = {
 
 type messageStateType = {
     messages: ReceivedMessage[],
-    alertMessage:string,
+    alertMessage: string,
 }
 
 const DEFAULT_INBOX = {
-    messageState: {messages: [] as ReceivedMessage[], alertMessage: ''},
-    dispatchMessages: () => {},
+    messageState: { messages: [] as ReceivedMessage[], alertMessage: '' },
+    dispatchMessages: () => { },
 }
 
 const InboxContext = createContext<PropsInboxContext>(DEFAULT_INBOX);
 
-const InboxContextProvider : React.FC = ({children}) => {
+const InboxContextProvider: React.FC = ({ children }) => {
 
-    const initialState = {messages: [] as ReceivedMessage[], alertMessage: ''}
-	const [messageState, dispatchMessages] = useReducer(inboxReducer, initialState);
+    const initialState = { messages: [] as ReceivedMessage[], alertMessage: '' }
+    const [messageState, dispatchMessages] = useReducer(inboxReducer, initialState);
 
     return (
         <InboxContext.Provider value={{ messageState, dispatchMessages }}>
@@ -31,5 +31,5 @@ const InboxContextProvider : React.FC = ({children}) => {
     )
 }
 
-export {InboxContextProvider}
+export { InboxContextProvider }
 export default InboxContext;
