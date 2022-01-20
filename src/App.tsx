@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useMemo } from "react";
 import { useEffect } from "react";
 import generateMessage, { Message } from "./Api";
 import { CardTile } from "./components";
@@ -11,11 +11,19 @@ const App: React.FC<{}> = () => {
 	
 	const {dispatchMessages} = useContext(InboxContext);
 	const [isGettingMes, setIsGettingMes] = useState(true)
+	const tileOptions = useMemo(() => {
+		return [
+			{title:"Error Type 1",  priority:0},
+			{title:"Warning Type 2",  priority:1},
+			{title:"Info Type 3",  priority:2}
+		]
+	}, []);
 
 	useEffect(() => {
 		if(isGettingMes) {
 			const cleanUp = generateMessage((message: Message) => {
 				dispatchMessages({type: 'ADD_MESSAGE', message: {...message, id: uuidv4()}});
+				setTimeout(() => {dispatchMessages({type: 'CLEAR_NOTIFICATION'})}, 2000);
 			});
 			return cleanUp;
 		}
@@ -34,9 +42,9 @@ const App: React.FC<{}> = () => {
 				</div>
 
 				<div className="cardsContainer">
-					<CardTile title={"Error Type 1"} priority={0} />
-					<CardTile title={"Warning Type 2"} priority={1} />
-					<CardTile title={"Info Type 3"} priority={2} />
+					{tileOptions.map((o, key) => (
+						<CardTile title={o.title} priority={o.priority} key={key}/>
+					))}
 				</div>
 			</Page>
 	);

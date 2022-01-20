@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, memo, useMemo, useCallback} from 'react';
 import StyledCardTile from './styles';
 import Card from '../card';
 import InboxContext from '../../config/context/inbox';
@@ -7,11 +7,13 @@ import ReceivedMessage from '../../config/interfaces/messages';
 
 function CardTile({ title, priority}:tileProps){
 
-    const {messages, dispatchMessages} = useContext(InboxContext);
-    const tileMessages = messages.filter((m) => m.priority === priority);
+    const {messageState, dispatchMessages} = useContext(InboxContext);
+    
+    const tileMessages = useMemo(() => {
+        return messageState.messages.filter((m) => m.priority === priority);
+    }, [messageState, priority]) 
 
-    const clearMessage = (message: ReceivedMessage) => {dispatchMessages({type:'CLEAR_MESSAGE', message: message})}
-
+    const clearMessage = useCallback((message: ReceivedMessage) => {dispatchMessages({type:'CLEAR_MESSAGE', message: message})}, [dispatchMessages])
 
     return (
         <StyledCardTile className='cardTile'>
@@ -22,7 +24,7 @@ function CardTile({ title, priority}:tileProps){
          
 
             {tileMessages.map((m, key) => 
-                <Card message={m.message} clear={() => clearMessage(m)} key={key} id={m.id} priority={m.priority}/>
+                <Card isAlert={messageState.alertMessage === m.id} message={m.message} clear={() => clearMessage(m)} key={key} priority={m.priority}/>
             )}
         </StyledCardTile>
     );
@@ -35,4 +37,5 @@ interface tileProps {
 }
 
 
-export default CardTile;
+export default memo(CardTile);
+

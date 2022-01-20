@@ -1,21 +1,28 @@
-import React from 'react';
+import React, {Fragment, memo} from 'react';
+import { Snackbar } from '@material-ui/core';
 import StyledCard from './styles';
 
-function Card({message, priority, id, clear}:cardProps){
+function Card({message, priority, clear, isAlert}:cardProps){
     return (
-        <StyledCard className={`card card--${priority}`}>
-            <div>{message}</div>
-            <button onClick={() => clear()}>clear</button>
-        </StyledCard>
+        <Fragment>
+            <StyledCard className={`card card--${priority}`}>
+                <div>{message}</div>
+                <button onClick={() => clear()}>clear</button>
+            </StyledCard>
+
+            <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'right' }} 
+                      open={isAlert}
+                      message={message} />
+        </Fragment>
     );
 }
 
 interface cardProps {
     message: string,
     priority: number,
-    id?: string,
     clear: Function,
+    isAlert: boolean,
 }
 
 
-export default Card;
+export default memo(Card);
