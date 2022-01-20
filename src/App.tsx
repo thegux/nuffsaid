@@ -10,7 +10,7 @@ import { v4 as uuidv4 } from "uuid";
 const App: React.FC<{}> = () => {
 
 	const { dispatchMessages } = useContext(InboxContext);
-	const [isGettingMes, setIsGettingMes] = useState(true)
+	const [isGettingMsg, setIsGettingMsg] = useState(true)
 	const tileOptions = useMemo(() => {
 		return [
 			{ title: "Error Type 1", priority: 0 },
@@ -20,14 +20,14 @@ const App: React.FC<{}> = () => {
 	}, []);
 
 	useEffect(() => {
-		if (isGettingMes) {
+		if (isGettingMsg) {
 			const cleanUp = generateMessage((message: Message) => {
 				dispatchMessages({ type: 'ADD_MESSAGE', message: { ...message, id: uuidv4() } });
 				setTimeout(() => { dispatchMessages({ type: 'CLEAR_NOTIFICATION' }) }, 2000);
 			});
 			return cleanUp;
 		}
-	}, [dispatchMessages, isGettingMes]);
+	}, [dispatchMessages, isGettingMsg]);
 
 	return (
 		<Page>
@@ -37,7 +37,7 @@ const App: React.FC<{}> = () => {
 			</header>
 
 			<div className="menu">
-				<button onClick={() => { setIsGettingMes(s => !s) }}>{isGettingMes ? 'STOP' : 'START'}</button>
+				<button onClick={() => { setIsGettingMsg(s => !s) }}>{isGettingMsg ? 'STOP' : 'START'}</button>
 				<button onClick={() => dispatchMessages({ type: 'CLEAR_ALL' })}>CLEAR</button>
 			</div>
 
